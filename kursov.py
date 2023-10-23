@@ -3,7 +3,7 @@ import csv, sqlite3
 sqlite_connection = sqlite3.connect('final.db')
 cursor = sqlite_connection.cursor()
 
-with open('tg bot.csv','r') as fin:
+with open('tgbot.csv','r') as fin:
     dr = csv.DictReader(fin, delimiter=';')
     to_db = [(i['id'], i['name']) for i in dr]
 

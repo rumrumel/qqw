@@ -73,7 +73,7 @@ class BotdB:
         result = cursor.fetchall()
         cursor.close()
 
-        if last_word[-1] == 'ь' or last_word[-1] == 'ъ':
+        if last_word[-1] == 'ь' or last_word[-1] == 'ъ' or last_word[-1] == 'ы':
             for x in result:
                 if last_word[-2].upper() == x[1][0] and Was(x[-2]) == 0:
                     return x[1]

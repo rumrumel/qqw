@@ -92,7 +92,7 @@ def Print_answer(user_id):
     result = cursor.fetchall()
     cursor.close()
 
-    if last_word[-1] == 'ь' or last_word[-1] == 'ъ':
+    if last_word[-1] == 'ь' or last_word[-1] == 'ъ' or last_word[-1] == 'ы':
         for x in result:
             if last_word[-2].upper() == x[1][0] and Was(x[-2], user_id) == 0:
                 return x[1]
@@ -112,40 +112,40 @@ def welcome(message):
 
     # keyboard
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("Начать игру")
-    item2 = types.KeyboardButton("Закончить игру")
+    item1 = types.KeyboardButton("начать игру")
+    item2 = types.KeyboardButton("закончить игру")
 
     markup.add(item1, item2)
-    bot.send_message(message.chat.id,"Привет, {0.first_name}!\nМеня зовут '{1.first_name}'. \nПоиграем в слова?".format(message.from_user, bot.get_me()), reply_markup=markup)
+    bot.send_message(message.chat.id,"привет, {0.first_name}! меня зовут '{1.first_name}'. \nя создан для того, чтобы играть в слова в тематике аниме-сериалов. поиграем?".format(message.from_user, bot.get_me()), reply_markup=markup)
 
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
-    if message.text != 'Начать игру' and message.text != 'Закончить игру' and (
+    if message.text != 'начать игру' and message.text != 'закончить игру' and (
             Is_there(message.text + '\n') or Is_there(message.text) == 0):
-        bot.send_message(message.chat.id, "Прости, я не знаю такого аниме. Можешь назвать другое?")
+        bot.send_message(message.chat.id, "прости, я не знаю такого аниме. можешь назвать другое?")
 
-    elif message.text != 'Начать игру' and message.text != 'Закончить игру' and (
+    elif message.text != 'начать игру' and message.text != 'закончить игру' and (
             Was(message.text + '\n', message.chat.id) == 1 or Was(message.text, message.chat.id) == 1):
-        bot.send_message(message.chat.id, "Такое аниме уже было. Можешь назвать другое?")
+        bot.send_message(message.chat.id, "такое аниме уже было. можешь назвать другое?")
 
-    elif message.text == 'Начать игру':
+    elif message.text == 'начать игру':
         sti = open('./lets_start.webp', 'rb')
         bot.send_sticker(message.chat.id, sti)
-        bot.send_message(message.chat.id, "Хорошо, начинай!")
+        bot.send_message(message.chat.id, "ты начинаешь! назови любое название аниме.")
         # Очистить бд использованных слов
         New_game(message.chat.id)
 
-    elif message.text == 'Закончить игру':
+    elif message.text == 'закончить игру':
         sti = open('./bye.webp', 'rb')
         bot.send_sticker(message.chat.id, sti)
-        bot.send_message(message.chat.id, "Спасибо за игру, это было весело. Надеюсь тебе понравилось)")
+        bot.send_message(message.chat.id, "спасибо за игру. надеюсь, тебе понравилось и ты узнал для себя больше новых аниме.")
         # Очистить бд использованных слов
         New_game(message.chat.id)
 
     elif How_much(message.chat.id) != 0 and message.text[0].upper() != read_row(message.chat.id)[-1].upper() and \
-            read_row(message.chat.id)[-1].upper() != 'Ъ' and read_row(message.chat.id)[-1].upper() != 'Ь':
-        bot.send_message(message.chat.id, "Похоже, что ты сказал слово не на ту букву.")
+            read_row(message.chat.id)[-1].upper() != 'Ъ' and read_row(message.chat.id)[-1].upper() != 'Ь' and read_row(message.chat.id)[-1].upper() != 'Ы':
+        bot.send_message(message.chat.id, "похоже, что ты сказал название аниме не на ту букву.")
 
     elif How_much(message.chat.id) != 20000:
         # print(message.chat.id)
@@ -155,7 +155,7 @@ def lalala(message):
         add_record(x, message.chat.id)
 
     else:
-        bot.send_message(message.chat.id, "Вы победили \nЧтобы начать новую игру нажмите 'Начать игру'")
+        bot.send_message(message.chat.id, "поздравляю, ты победил! \nчтобы начать новую игру нажми 'начать игру'")
 
 
 # RUN
